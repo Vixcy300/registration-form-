@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #e8eaf6, #f3e5f5);  /* Soft lavender gradient */
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-container {
+            background: #ffffffee;  /* Slightly transparent white */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(90, 60, 130, 0.12);
+        }
+        h1 {
+            text-align: center;
+            color: #5c35a3;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background: #fafafe;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #7e57c2;
+            box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.15);
+        }
+        .error {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #7e57c2, #5c35a3);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            line-height: 1;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        button::-moz-focus-inner { border: 0; padding: 0; }
+        button:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Footer styling */
+        .site-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px 0;
+            color: #6b4da1;
+            font-size: 13px;
+            border-top: 1px solid rgba(92,53,163,0.08);
+            background: transparent;
+            border-radius: 0 0 12px 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Registration Form For EMC Week 4</h1>
+        <form id="registrationForm" novalidate>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+                <div class="error" id="nameError" role="alert" aria-live="polite">Name cannot be empty</div>
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Enter your email">
+                <div class="error" id="emailError" role="alert" aria-live="polite">Please enter a valid email address</div>
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+                <div class="error" id="passwordError" role="alert" aria-live="polite">Password must be at least 6 characters</div>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+
+        [nameInput, emailInput, passwordInput].forEach(input => {
+            input.addEventListener('input', validateAllFields);
+        });
+
+        function validateAllFields() {
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            document.getElementById('nameError').style.display = 'none';
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+
+            let allValid = true;
+
+            if (name === '') {
+                document.getElementById('nameError').style.display = 'block';
+                allValid = false;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                allValid = false;
+            }
+            if (password.length < 6) {
+                document.getElementById('passwordError').style.display = 'block';
+                allValid = false;
+            }
+
+            return allValid;
+        }
+
+        form.addEventListener('submit', (e) => {
+            const ok = validateAllFields();
+            if (!ok) {
+                e.preventDefault();
+                if (document.getElementById('nameError').style.display === 'block') nameInput.focus();
+                else if (document.getElementById('emailError').style.display === 'block') emailInput.focus();
+                else if (document.getElementById('passwordError').style.display === 'block') passwordInput.focus();
+                return;
+            }
+            e.preventDefault();
+            alert('Registration successful!');
+            form.reset();
+            document.getElementById('nameError').style.display = 'none';
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+        });
+    </script>
+    <footer class="site-footer">&copy; 2026 ViGNESH S — Developer</footer>
+</body>
+</html>
